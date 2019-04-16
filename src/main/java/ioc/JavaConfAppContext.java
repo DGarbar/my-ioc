@@ -1,58 +1,62 @@
 package ioc;
 
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.HashMap;
+import ioc.exception.MultipleBeanMatch;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class JavaConfAppContext implements BeanFactory {
 
-    private Map<String, Class<?>> config;
-    private Map<String, Object> context = new HashMap<>();
-
-    public JavaConfAppContext(Map<String, Class<?>> config) {
-        this.config = config;
-    }
+    private List<BeanDefinition> context = new ArrayList<>();
 
     public JavaConfAppContext() {
-        this.config = Collections.emptyMap()
-        ;
     }
 
-    protected void methodtest(){
-
+    public JavaConfAppContext(Map<String, Class<?>> config) {
+        context = parseMapToList(config);
     }
 
     @Override
     public <T> T getBean(String beanName) {
-        Class<?> aClass = config.get(beanName);
-        return (T) Optional.ofNullable(context.get(beanName))
-            .orElseGet(() -> createFromClass(aClass));
-
+        return (T) getBeanDefinition(beanName)
+            .map(BeanDefinition::getBeanInstance)
+            .orElse(null);
     }
 
-    private <T> Optional<T> createFromClass(Class<T> clazz) {
-        try {
-            Constructor<?>[] constructors = clazz.getConstructors();
-            constructors[0].newInstance();
-            return (Optional<T>) Optional.of(constructors[0].newInstance());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            return Optional.empty();
+    @Override
+    public <T> T getBean(Class<T> clazz) {
+        List<BeanDefinition> beanDefinitions = context.stream()
+            .filter(beanDefinition -> beanDefinition.isAssignableFrom(clazz))
+            .collect(Collectors.toList());
+        if (beanDefinitions.size() > 1) {
+            throw new MultipleBeanMatch();
         }
+        return (T) beanDefinitions.get(0).getBeanInstance();
+    }
+
+
+    @Override
+    public Optional<BeanDefinition> getBeanDefinition(String beanName) {
+        return context.stream()
+            .filter(beanDefinition -> beanDefinition.getName().equals(beanName))
+            .findAny();
     }
 
     @Override
-    public BeanDefinition getBeanDefinition(String beanName) {
-        return null;
+    public List<String> getBeanDefinitionNames() {
+        return context.stream()
+            .map(BeanDefinition::getName)
+            .collect(Collectors.toList());
     }
 
-    @Override
-    public BeanDefinition[] getBeanDefinitionNames() {
-      return config.keySet().stream()
-          .map(BeanDefinition::new).toArray(BeanDefinition[]::new);
+    //Check if Map is appropriate
+    private List<BeanDefinition> parseMapToList(Map<String, Class<?>> config) {
+        return config.entrySet().stream()
+            .map(stringClassEntry -> new BeanDefinition(stringClassEntry.getKey(),
+                stringClassEntry.getValue()))
+            .collect(Collectors.toList());
     }
 }

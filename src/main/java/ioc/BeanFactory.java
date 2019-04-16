@@ -1,11 +1,16 @@
 package ioc;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface BeanFactory {
 
 	<T> T getBean(String beanName);
 
-	ioc.BeanDefinition getBeanDefinition(String beanName);
+	<T> T getBean(Class<T> clazz);
 
-	BeanDefinition[] getBeanDefinitionNames();
+	Optional<BeanDefinition> getBeanDefinition(String beanName);
+
+	List<String> getBeanDefinitionNames();
 
 }

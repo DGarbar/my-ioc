@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import shorter.service.IdentShorterService;
 import shorter.service.ShorterServiceRandomNumber;
+import testClasses.ProxyClassBench;
 
 public class reflectionTest {
 
@@ -37,7 +38,7 @@ public class reflectionTest {
 
     @Test
     void findPostConstructMethod() {
-        Optional<Method> any = Arrays.stream(IdentShorterService.class.getMethods())
+        Optional<Method> any = Arrays.stream(ProxyClassBench.class.getMethods())
             .filter(this::isPostConstructAnnotation)
             //Todo change
 //            .filter(method -> method.getParameterCount() == 0)

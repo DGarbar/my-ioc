@@ -1,5 +1,7 @@
 package shorter.service;
 
+import ioc.annotation.PostConstruct;
+
 public class IdentShorterService implements ShorterService {
 
 	@PostConstruct

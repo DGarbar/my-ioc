@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import shorter.service.IdentShorterService;
+import testClasses.NeedListInConstructor;
+import testClasses.ProxyClassBench;
 
 class JavaConfAppContextTest {
 
@@ -68,6 +70,27 @@ class JavaConfAppContextTest {
 
         BeanFactory javaConfAppContext = new JavaConfAppContext(config);
         assertThrows(MultipleBeanMatch.class, () -> javaConfAppContext.getBean(List.class));
+    }
+
+    @Test
+    public void tryCreateWithConstructorWithParameters() {
+        Map<String, Class<?>> config = Map
+            .of("a", ArrayList.class, "b", NeedListInConstructor.class);
+        BeanFactory javaConfAppContext = new JavaConfAppContext(config);
+        NeedListInConstructor bean = javaConfAppContext.getBean(NeedListInConstructor.class);
+        assertNotNull(bean.getList());
+    }
+
+
+    @Test
+    public void testProxyMethod() {
+        Map<String, Class<?>> config = Map.of("a", ProxyClassBench.class);
+        BeanFactory javaConfAppContext = new JavaConfAppContext(config);
+        ProxyClassBench bean = javaConfAppContext.getBean(ProxyClassBench.class);
+        bean.bench();
+        bean.voidBench();
+
+        bean.not();
     }
 
 

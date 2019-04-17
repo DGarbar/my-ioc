@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 public class BeanDefinition {
 
@@ -28,7 +31,7 @@ public class BeanDefinition {
 
     private void fillMetaData(Class clazz) {
         init = findInitMethod(clazz);
-        postConstrcut = findPostConstructMethod(clazz);
+//        postConstrcut = findPostConstructMethod(clazz);
     }
 
     public String getName() {
@@ -42,7 +45,7 @@ public class BeanDefinition {
         return instance;
     }
 
-    public boolean isAssignableFrom(Class subClass) {
+    public boolean isAssignableFrom(Class<?> subClass) {
         return subClass.isAssignableFrom(clazz);
     }
 
@@ -52,7 +55,7 @@ public class BeanDefinition {
             Object o = createIfEmptyConstructorProvided(constructors)
                 .orElseGet(() -> createFormConstructor(constructors, context));
             callInitMethod(o);
-            return o;
+            return getProxy();
         } catch (Exception e) {
             e.printStackTrace();
             throw new NotAppropriateConstructorFound();
@@ -139,23 +142,46 @@ public class BeanDefinition {
         return Arrays.stream(clazz.getMethods())
             .filter(method -> method.getName().equals("init"))
             //Todo change
-//            .filter(method -> method.getParameterCount() == 0)
+            .filter(method -> method.getParameterCount() == 0)
             .findAny();
     }
 
+//
+//
+//    private Optional<Method> findPostConstructMethod(Class<?> clazz) {
+//        return Arrays.stream(clazz.getMethods())
+//            .filter(this::isPostConstructAnnotation)
+//            //Todo change
+////            .filter(method -> method.getParameterCount() == 0)
+//            .findAny();
+//    }
+//
+//    private List<Method> findBenchmarkMethod(Class<?> clazz) {
+//        return Arrays.stream(clazz.getMethods())
+//            .filter(this::isBenchmarkAnnotation)
+//            //Todo change
+////            .filter(method -> method.getParameterCount() == 0)
+//            .collect(Collectors.toList());
+//    }
 
-    private Optional<Method> findPostConstructMethod(Class<?> clazz) {
-        return Arrays.stream(clazz.getMethods())
-            .filter(this::isPostConstructAnnotation)
-            //Todo change
-//            .filter(method -> method.getParameterCount() == 0)
-            .findAny();
+    private Object getProxy() {
+        return null;
     }
 
-    private boolean isPostConstructAnnotation(Method method){
-       return Arrays.stream(method.getDeclaredAnnotations())
-            .anyMatch(annotation -> annotation.annotationType().getName().endsWith("PostConstruct"));
+
+    public Object getInstance() {
+        return instance;
     }
 
+    public Class getClazz() {
+        return clazz;
+    }
 
+    public Optional<Method> getInit() {
+        return init;
+    }
+
+    public Optional<Method> getPostConstrcut() {
+        return postConstrcut;
+    }
 }

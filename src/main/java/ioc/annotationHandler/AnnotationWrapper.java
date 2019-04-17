@@ -1,16 +1,12 @@
 package ioc.annotationHandler;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.function.Supplier;
 
 public interface AnnotationWrapper {
 
-//    Object addAnnotationCustomLogic(String annotationName, Method method,
-//        Supplier<Object> methodExecution);
+    Supplier<Object> wrap(Method method, Supplier<Object> rootInvoke);
 
-    default boolean isMethodContainsAnnotationName(Method method, String name) {
-        return Arrays.stream(method.getDeclaredAnnotations())
-            .anyMatch(annotation -> annotation.annotationType().getName().equals(name));
-    }
+    boolean isEqualsAnnotation(Annotation annotationClass);
 }

@@ -87,8 +87,8 @@ class JavaConfAppContextTest {
         Map<String, Class<?>> config = Map.of("a", ProxyClassBench.class);
         BeanFactory javaConfAppContext = new JavaConfAppContext(config);
         ProxyClassBench bean = javaConfAppContext.getBean(ProxyClassBench.class);
-        bean.bench();
-        bean.voidBench();
+//        bean.bench();
+//        bean.voidBench();
 
         bean.not();
     }

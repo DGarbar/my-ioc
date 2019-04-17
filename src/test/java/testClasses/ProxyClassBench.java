@@ -1,16 +1,38 @@
 package testClasses;
 
+import ioc.annotation.Autowired;
 import ioc.annotation.Benchmark;
+import ioc.annotation.Init;
 import ioc.annotation.Koko;
+import ioc.annotation.PostConstruct;
+import java.util.List;
 
 public class ProxyClassBench {
-
-    @Benchmark
-    public int bench() {
-        System.out.println("asdasdas dasd asd sd ad WORK WAEW ");
-        return 0;
+    @Autowired
+    public ProxyClassBench() {
     }
 
+    public ProxyClassBench(List<String> list) {
+    }
+
+
+    public ProxyClassBench(Object o) {
+    }
+
+
+//    @PostConstruct
+//    public void postC() {
+//        System.out.println("PostConstruct");
+//    }
+
+    @Benchmark
+    @Init
+    public int initBench() {
+        System.out.println("BENCH ");
+        System.out.println("INIT");
+        return 0;
+    }
+//
     @Benchmark
     public void voidBench() {
         System.out.println("asdasdas dasd asd sd ad WORK WAEW ");
@@ -19,6 +41,7 @@ public class ProxyClassBench {
     public void not() {
         System.out.println("simple ");
     }
+
     @Benchmark
     @Koko
     public void koko() {

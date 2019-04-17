@@ -2,6 +2,7 @@ package ioc;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ioc.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +50,6 @@ public class reflectionTest {
 
     private boolean isPostConstructAnnotation(Method method){
         return Arrays.stream(method.getDeclaredAnnotations())
-            .anyMatch(annotation -> annotation.annotationType().getName().endsWith("PostConstruct"));
+            .anyMatch(annotation -> annotation.annotationType().equals(PostConstruct.class));
     }
 }

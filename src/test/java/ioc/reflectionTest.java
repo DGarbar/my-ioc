@@ -2,10 +2,14 @@ package ioc;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import shorter.service.IdentShorterService;
+import shorter.service.ShorterServiceRandomNumber;
 
 public class reflectionTest {
 
@@ -24,5 +28,26 @@ public class reflectionTest {
     @Test
     void testAssignableFroma() throws ClassNotFoundException {
         System.out.println(Class.forName("Asd"));
+    }
+
+    @Test
+    void testMethodName() throws ClassNotFoundException {
+        Arrays.stream(ShorterServiceRandomNumber.class.getMethods()).map(Method::getName).forEach(System.out::println);
+    }
+
+    @Test
+    void findPostConstructMethod() {
+        Optional<Method> any = Arrays.stream(IdentShorterService.class.getMethods())
+            .filter(this::isPostConstructAnnotation)
+            //Todo change
+//            .filter(method -> method.getParameterCount() == 0)
+            .findAny();
+
+        assertTrue(any.isPresent());
+    }
+
+    private boolean isPostConstructAnnotation(Method method){
+        return Arrays.stream(method.getDeclaredAnnotations())
+            .anyMatch(annotation -> annotation.annotationType().getName().endsWith("PostConstruct"));
     }
 }

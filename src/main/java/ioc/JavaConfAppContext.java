@@ -22,7 +22,7 @@ public class JavaConfAppContext implements BeanFactory {
     @Override
     public <T> T getBean(String beanName) {
         return (T) getBeanDefinition(beanName)
-            .map(BeanDefinition::getBeanInstance)
+            .map(beanDefinition -> beanDefinition.getBeanInstance(context))
             .orElse(null);
     }
 
@@ -34,7 +34,7 @@ public class JavaConfAppContext implements BeanFactory {
         if (beanDefinitions.size() > 1) {
             throw new MultipleBeanMatch();
         }
-        return (T) beanDefinitions.get(0).getBeanInstance();
+        return (T) beanDefinitions.get(0).getBeanInstance(context);
     }
 
 

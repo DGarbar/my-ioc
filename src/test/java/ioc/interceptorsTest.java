@@ -1,6 +1,6 @@
 package ioc;
 
-import ioc.annotationHandler.BenchmarkMethodInterceptor;
+import ioc.annotationWrappers.BenchmarkMethodInterceptor;
 import ioc.exception.BadInvocationException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

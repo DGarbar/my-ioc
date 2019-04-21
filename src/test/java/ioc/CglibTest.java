@@ -1,11 +1,8 @@
 package ioc;
 
-import ioc.annotation.Koko;
-import ioc.annotationHandler.BenchmarkMethodInterceptor;
-import ioc.annotationHandler.KokoMethodInterceptor;
+import ioc.annotationWrappers.BenchmarkMethodInterceptor;
+import ioc.annotationWrappers.KokoMethodInterceptor;
 import ioc.exception.BadInvocationException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Arrays;

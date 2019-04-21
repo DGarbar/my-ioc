@@ -1,30 +1,36 @@
 package shorter.model;
 
+import javax.persistence.*;
+
+
+@Entity
 public class Link {
 
-	private final String link;
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String link;
 
-	public static Link linkTo(String link) {
-		return new Link(link);
-	}
+    public Link() {
+    }
 
-	public static Link HTTPLinkTo(String path) {
-		return new Link("http://" + path);
-	}
+    public Link(String link) {
+        this.link = link;
+    }
 
-	public Link(String link) {
-		check(link);
-		this.link = link;
-	}
+    public static Link linkTo(String link) {
+        return new Link(link);
+    }
 
-	private void check(String link) {
-	}
+    public static Link HTTPLinkTo(String path) {
+        return new Link("http://" + path);
+    }
 
-	public String getPath() {
-		return link.substring(link.indexOf("//") + 2);
-	}
+    public String getPath() {
+        return link.substring(link.indexOf("//") + 2);
+    }
 
-	public String link() {
-		return link;
-	}
+    public String link() {
+        return link;
+    }
 }

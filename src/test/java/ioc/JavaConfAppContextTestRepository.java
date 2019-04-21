@@ -10,28 +10,16 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import testClasses.SimpleBeans.BeanA;
 import testClasses.SimpleBeans.BeanB;
+import testClasses.SimpleBeans.RepoBean;
 
-class JavaConfAppContextTest {
+class JavaConfAppContextTestRepository {
 
-    @Test
-    public void createEmptyContext() {
-        BeanFactory javaConfAppContext = new JavaConfAppContext(List.of());
-        assertNotNull(javaConfAppContext);
-    }
 
-    @Test
-    public void beanDefIsEmptyAfterCreation() {
-        BeanFactory javaConfAppContext = new JavaConfAppContext(List.of());
-        List<String> beanDefinitionNames = javaConfAppContext.getBeanDefinitionNames();
-        assertEquals(1, beanDefinitionNames.size());
-    }
-
-    //
     @Test
     public void beanDefIsNotForContext() {
-        BeanFactory javaConfAppContext = new JavaConfAppContext(List.of(BeanA.class));
-        List<String> beanDefinitionNames = javaConfAppContext.getBeanDefinitionNames();
-        assertEquals(2, beanDefinitionNames.size());
+        BeanFactory javaConfAppContext = new JavaConfAppContext(List.of(RepoBean.class));
+//        List<String> beanDefinitionNames = javaConfAppContext.getBeanDefinitionNames();
+//        assertEquals(2, beanDefinitionNames.size());
     }
 
     @Test

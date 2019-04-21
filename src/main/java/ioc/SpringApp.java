@@ -11,8 +11,10 @@ public class SpringApp {
 //        ctx.getBeanDefinition("beanName");
 //        ctx.getBeanDefinitionNames();
 
-        BeanFactory context = new JavaConfAppContext();
-        ShorterService shorterService = context.getBean("");
+//        BeanFactory context = new JavaConfAppContext();
+//        ShorterService shorterService = context.getBean("");
+
+
 
     }
 

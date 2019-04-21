@@ -1,5 +1,6 @@
 package ioc;
 
+import ioc.beanService.beanDefinitions.BeanDefinition;
 import java.util.List;
 import java.util.Optional;
 

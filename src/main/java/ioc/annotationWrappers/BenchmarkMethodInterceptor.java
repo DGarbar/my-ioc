@@ -1,4 +1,4 @@
-package ioc.annotationHandler;
+package ioc.annotationWrappers;
 
 import ioc.Util.ReflectionUtil;
 import ioc.annotation.Benchmark;
@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
-public class BenchmarkMethodInterceptor implements AnnotationWrapper {
+public class BenchmarkMethodInterceptor implements AnnotationMethodWrapper {
 
     private static final Class<?> BENCHMARK_CLASS = Benchmark.class;
 

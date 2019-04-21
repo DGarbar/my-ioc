@@ -21,7 +21,13 @@ public class ReflectionUtil {
             .anyMatch(annotation -> annotation.annotationType().equals(annotationClazz));
     }
 
-    public static void invokeMethod(List<Method> methods, Object o){
+    public static boolean isClassContainsAnnotation(Class<?> clazz,
+        Class<?> annotationClazz) {
+        return Arrays.stream(clazz.getDeclaredAnnotations())
+            .anyMatch(annotation -> annotation.annotationType().equals(annotationClazz));
+    }
+
+    public static void invokeMethods(List<Method> methods, Object o){
         methods.forEach(method -> {
             try {
                 method.invoke(o);

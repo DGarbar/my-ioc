@@ -1,4 +1,4 @@
-package ioc.annotationHandler;
+package ioc.annotationWrappers;
 
 import ioc.Util.ReflectionUtil;
 import ioc.annotation.Koko;
@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
-public class KokoMethodInterceptor implements AnnotationWrapper {
+public class KokoMethodInterceptor implements AnnotationMethodWrapper {
 
     private final static Class<Koko> KOKO_CLASS = Koko.class;
 

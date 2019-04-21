@@ -6,10 +6,8 @@ import ioc.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import shorter.service.IdentShorterService;
 import shorter.service.ShorterServiceRandomNumber;
 import testClasses.ProxyClassBench;
 
@@ -22,19 +20,14 @@ public class reflectionTest {
     }
 
     @Test
-    void testAssignableFrom() {
-        boolean assignableFrom = List.class.isAssignableFrom(ArrayList.class);
-        assertTrue(assignableFrom);
-    }
-
-    @Test
-    void testAssignableFroma() throws ClassNotFoundException {
+    void testAssignableFrom() throws ClassNotFoundException {
         System.out.println(Class.forName("Asd"));
     }
 
     @Test
-    void testMethodName() throws ClassNotFoundException {
-        Arrays.stream(ShorterServiceRandomNumber.class.getMethods()).map(Method::getName).forEach(System.out::println);
+    void testMethodName() {
+        Arrays.stream(ShorterServiceRandomNumber.class.getMethods()).map(Method::getName)
+            .forEach(System.out::println);
     }
 
     @Test
@@ -48,8 +41,14 @@ public class reflectionTest {
         assertTrue(any.isPresent());
     }
 
-    private boolean isPostConstructAnnotation(Method method){
+    private boolean isPostConstructAnnotation(Method method) {
         return Arrays.stream(method.getDeclaredAnnotations())
             .anyMatch(annotation -> annotation.annotationType().equals(PostConstruct.class));
     }
+
+    @Test
+    void splitByUpperCase() {
+        System.out.println(Arrays.toString("findAllByNameOrEmail".split("(?=\\p{Upper})")));
+    }
+
 }

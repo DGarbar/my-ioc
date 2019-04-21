@@ -6,6 +6,7 @@ import ioc.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import shorter.service.ShorterServiceRandomNumber;

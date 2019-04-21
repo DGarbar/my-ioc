@@ -29,9 +29,9 @@ public class ComponentBeanGenerator {
     public ComponentBeanGenerator() {
         wrapperList = List.of(
             new BenchmarkMethodInterceptor(),
-            new KokoMethodInterceptor(),
-            new TransactionMethodWrapper(
-                Persistence.createEntityManagerFactory("TestManager")));
+            new KokoMethodInterceptor());
+//            new TransactionMethodWrapper(
+//                Persistence.createEntityManagerFactory("TestManager")));
     }
 
 

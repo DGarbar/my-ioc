@@ -3,9 +3,15 @@ package ioc.beanService.beanGenerators;
 import ioc.beanService.beanDefinitions.RepositoryBeanDefinition;
 import ioc.beanService.beanDefinitions.dataBase.model.MethodSqlDefinition;
 import ioc.exception.BadInvocationException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.SQLOutput;
+import java.util.Arrays;
+import java.util.Optional;
 import javax.persistence.*;
 import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.FixedValue;
+import net.sf.cglib.proxy.InvocationHandler;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -27,29 +33,40 @@ public class RepositoryBeanGenerator {
         enhancer.setCallback(
             new MethodInterceptor() {
                 @Override
-                public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) {
+                public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy)
+                    throws Throwable {
+                    Optional<String> any = Arrays.stream(Object.class.getMethods())
+                        .map(method1 -> method1.getName())
+                        .filter(s -> s.equals(method.getName()))
+                        .findAny();
+                    if (any.isPresent()) {
+                        System.out.println(method);
+                        Object invoke = method.invoke(proxy, args);
+                        System.out.println(invoke);
+                        return invoke;
+                    }
                     EntityManager entityManager = entityManagerFactory.createEntityManager();
                     EntityTransaction transaction = entityManager.getTransaction();
                     try {
                         transaction.begin();
+                        System.out.println("transaction Begin");
                         Object result = beanDefinition.getMethodSqlDefinitions().stream()
                             .filter(methodSqlDefinition -> methodSqlDefinition.getMethodName()
                                 .equals(method.getName()))
                             .findFirst()
                             .map(MethodSqlDefinition::getMethodInvoke)
                             .map(func -> func.apply(entityManager, args))
+                            //Without this, dont create Proxy
                             .orElse(null);
                         transaction.commit();
                         return result;
                     } catch (Throwable throwable) {
-                        throwable.printStackTrace();
                         transaction.rollback();
-                        throw new BadInvocationException();
+                        throw new BadInvocationException(throwable);
                     }
                 }
             });
         return enhancer;
     }
-
 
 }

@@ -1,5 +1,6 @@
 package ioc.beanService.beanGenerators;
 
+import ioc.BeanFactory;
 import ioc.SimpleIocAppContext;
 import ioc.annotationWrappers.BenchmarkMethodInterceptor;
 import ioc.annotationWrappers.KokoMethodInterceptor;
@@ -21,24 +22,24 @@ public class BeanGeneratorEntryPoint {
 	}
 
 	public Object getInstance(BeanDefinition beanDefinition,
-		SimpleIocAppContext simpleIocAppContext) {
+		BeanFactory beanFactory) {
 		BeanGenerator beanGenerator = getBeanGeneratorByBeanDefinition(
 			beanDefinition);
-		return getComponentInstance(beanGenerator, beanDefinition, simpleIocAppContext);
+		return getComponentInstance(beanGenerator, beanDefinition, beanFactory);
 	}
 
 	private Object getComponentInstance(BeanGenerator beanGenerator, BeanDefinition beanDefinition,
-		SimpleIocAppContext simpleIocAppContext) {
+		BeanFactory beanFactory) {
 		List<Class<?>> constructorParameters = beanDefinition.getConstructorParameters();
 		List<Object> parameters = constructorParameters.stream()
-			.map(simpleIocAppContext::getBean)
+			.map(beanFactory::getBean)
 			.collect(Collectors.toList());
 		return beanGenerator.getInstanceOfBean(beanDefinition, parameters);
 	}
 
 	private BeanGenerator getBeanGeneratorByBeanDefinition(BeanDefinition beanDefinition) {
 		return specialBeanGenerators.stream()
-			.filter(beanGenerator -> beanGenerator.canGenerateFromBeanDefinition(beanDefinition))
+			.filter(beanGenerator -> beanGenerator.supports(beanDefinition))
 			.findAny()
 			.orElseGet(() -> componentBeanGenerator);
 	}

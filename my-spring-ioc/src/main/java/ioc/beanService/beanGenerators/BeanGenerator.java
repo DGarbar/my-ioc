@@ -9,5 +9,5 @@ public interface BeanGenerator {
 		List<Object> parameters);
 
 
-	public boolean canGenerateFromBeanDefinition(BeanDefinition beanDefinition);
+	public boolean supports(BeanDefinition beanDefinition);
 }

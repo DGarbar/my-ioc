@@ -6,7 +6,7 @@ import java.util.List;
 
 public class RepositoryBeanDefinition extends BeanDefinition {
     private List<MethodSqlDefinition> methodSqlDefinitions;
-//
+
     public RepositoryBeanDefinition(String name, Class clazz,
         List<MethodSqlDefinition> methodSqlDefinitions) {
         super(name, clazz);
@@ -17,8 +17,7 @@ public class RepositoryBeanDefinition extends BeanDefinition {
         return methodSqlDefinitions;
     }
 
-    public void setMethodSqlDefinitions(
-        List<MethodSqlDefinition> methodSqlDefinitions) {
+    public void setMethodSqlDefinitions(List<MethodSqlDefinition> methodSqlDefinitions) {
         this.methodSqlDefinitions = methodSqlDefinitions;
     }
 }

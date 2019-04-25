@@ -42,7 +42,7 @@ public class ComponentBeanGenerator implements BeanGenerator {
 	}
 
 	//Smelly
-	public boolean canGenerateFromBeanDefinition(BeanDefinition beanDefinition) {
+	public boolean supports(BeanDefinition beanDefinition) {
 		return beanDefinition instanceof ComponentBeanDefinition;
 	}
 

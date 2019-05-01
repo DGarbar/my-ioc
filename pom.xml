@@ -12,6 +12,7 @@
     <module>my-spring-ioc</module>
     <module>my-spring-data</module>
     <module>shorter-example-app</module>
+    <module>test-dataIoc</module>
   </modules>
   <dependencies>
     <dependency>

@@ -8,19 +8,16 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
-import ioc.classScannerService.СlassScanner;
 import java.util.stream.Collectors;
-import javax.annotation.processing.SupportedSourceVersion;
 import org.junit.jupiter.api.Test;
 
-class СlassScannerTest {
+class ClassScannerTest {
 
 	@Test
 	void name() throws IOException , ClassNotFoundException {
-		СlassScanner classScanner = new СlassScanner();
-		List<Class> classes =  classScanner.getClasses("ioc.annotation");
+		ClassScanner classScanner = new ClassScanner();
+		List<Class<?>> classes =  classScanner.getClasses("ioc.annotation");
 		classes.stream().forEach(aClass -> System.out.println(aClass));
 		List<String> expected = List.of("interface ioc.annotation.Autowired"
 			,"interface ioc.annotation.Benchmark"
@@ -42,7 +39,7 @@ class СlassScannerTest {
 
 	@Test
 	void urlSoutTest() throws URISyntaxException, ClassNotFoundException {
-		URL ioc = СlassScannerTest.class.getClassLoader().getResource("ioc");
+		URL ioc = ClassScannerTest.class.getClassLoader().getResource("ioc");
 		System.out.println(ioc);
 		System.out.println("PATH = " + ioc.getPath());
 		System.out.println("FILE = " + ioc.getFile());
@@ -62,7 +59,7 @@ class СlassScannerTest {
 	void testPathWalk() throws URISyntaxException, IOException {
 		String dir = "ioc/testClasses";
 		String pack = dir.replaceAll("/", ".");
-		URL ioc = СlassScannerTest.class.getClassLoader().getResource(dir);
+		URL ioc = ClassScannerTest.class.getClassLoader().getResource(dir);
 
 		Path path = Path.of(ioc.toURI());
 

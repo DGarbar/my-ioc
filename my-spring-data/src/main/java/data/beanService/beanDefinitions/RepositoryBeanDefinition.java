@@ -1,23 +1,27 @@
 package data.beanService.beanDefinitions;
 
 import data.dataService.sqlParser.MethodSqlDefinition;
+import data.model.RepoType;
 import ioc.beanService.beanDefinitions.BeanDefinition;
 import java.util.List;
 
 public class RepositoryBeanDefinition extends BeanDefinition {
-    private List<MethodSqlDefinition> methodSqlDefinitions;
 
-    public RepositoryBeanDefinition(String name, Class clazz,
+	private final RepoType repoType;
+	private List<MethodSqlDefinition> methodSqlDefinitions;
+
+    public RepositoryBeanDefinition(String name, Class clazz, RepoType repoType,
         List<MethodSqlDefinition> methodSqlDefinitions) {
         super(name, clazz);
-        this.methodSqlDefinitions = methodSqlDefinitions;
+	    this.repoType = repoType;
+	    this.methodSqlDefinitions = methodSqlDefinitions;
     }
 
-    public List<MethodSqlDefinition> getMethodSqlDefinitions() {
+	public RepoType getRepoType() {
+		return repoType;
+	}
+
+	public List<MethodSqlDefinition> getMethodSqlDefinitions() {
         return methodSqlDefinitions;
-    }
-
-    public void setMethodSqlDefinitions(List<MethodSqlDefinition> methodSqlDefinitions) {
-        this.methodSqlDefinitions = methodSqlDefinitions;
     }
 }

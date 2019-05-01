@@ -19,23 +19,6 @@ public class reflectionTest {
 		System.out.println(Class.forName("Asd"));
 	}
 
-	@Test
-	void testMethodName() {
-//        Arrays.stream(ShorterServiceRandomNumber.class.getMethods()).map(Method::getName)
-//            .forEach(System.out::println);
-	}
-
-	@Test
-	void findPostConstructMethod() {
-//        Optional<Method> any = Arrays.stream(streamProxyClassBench.class.getMethods())
-//            .filter(this::isPostConstructAnnotation)
-		//Todo change
-//            .filter(method -> method.getParameterCount() == 0)
-//            .findAny();
-//
-//        assertTrue(any.isPresent());
-	}
-
 	private boolean isPostConstructAnnotation(Method method) {
 		return Arrays.stream(method.getDeclaredAnnotations())
 			.anyMatch(annotation -> annotation.annotationType().equals(PostConstruct.class));

@@ -4,6 +4,7 @@ import ioc.annotationWrappers.BenchmarkMethodInterceptor;
 import ioc.annotationWrappers.KokoMethodInterceptor;
 import ioc.exception.BadInvocationException;
 import ioc.testClasses.ProxyClassBench;
+import ioc.testClasses.SimpleBeans.RepoBean;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -53,7 +54,4 @@ public class CglibTest {
 	}
 
 
-	@Test
-	void testAnnotationEq() throws NoSuchMethodException {
-	}
 }

@@ -7,13 +7,15 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class СlassScanner {
+public class ClassScanner {
 
-	public List<Class> getClasses(String packageName) {
+	public List<Class<?>> getClasses(String packageName) {
+		if(packageName.isEmpty()) return Collections.emptyList();
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		String path = packageName.replace('.', '/');
 
@@ -32,7 +34,7 @@ public class СlassScanner {
 		}
 	}
 
-	private Class toClass(Path path, String rootDir) {
+	private Class<?> toClass(Path path, String rootDir) {
 		String classFromDir = getClassFromDir(path, rootDir);
 		try {
 			return Class.forName(classFromDir);
@@ -51,8 +53,8 @@ public class СlassScanner {
 			.replace(".class", "");
 	}
 
-	private List<Class> findClasses(Path directory, String packageName) {
-		List<Class> classes = new ArrayList<>();
+	private List<Class<?>> findClasses(Path directory, String packageName) {
+		List<Class<?>> classes = new ArrayList<>();
 		if (!Files.exists(directory)) {
 			return classes;
 		}

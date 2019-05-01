@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public abstract class IocBeanFactory implements BeanFactory {
 
-	private Map<BeanDefinition, Object> context;
+	private Map<BeanDefinition, Object> context  ;
 	protected BeanGeneratorEntryPoint beanGeneratorEntryPoint;
 	protected BeanInitializerEntryPoint beanInitializerEntryPoint;
 
@@ -20,7 +20,15 @@ public abstract class IocBeanFactory implements BeanFactory {
 		List<Class<?>> config,
 		BeanGeneratorEntryPoint beanGeneratorEntryPoint,
 		BeanInitializerEntryPoint beanInitializerEntryPoint) {
+		this.beanGeneratorEntryPoint = beanGeneratorEntryPoint;
+		this.beanInitializerEntryPoint = beanInitializerEntryPoint;
 		this.context = parseConfigToContext(config);
+	}
+
+	public IocBeanFactory(
+		BeanGeneratorEntryPoint beanGeneratorEntryPoint,
+		BeanInitializerEntryPoint beanInitializerEntryPoint) {
+		context = new HashMap<>();
 		this.beanGeneratorEntryPoint = beanGeneratorEntryPoint;
 		this.beanInitializerEntryPoint = beanInitializerEntryPoint;
 	}

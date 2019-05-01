@@ -13,11 +13,12 @@ import javax.persistence.*;
 public class TransactionMethodWrapper implements AnnotationMethodWrapper {
 
 	private final static Class<Transaction> TRANSACTION_CLASS = Transaction.class;
-	private final Supplier<EntityManagerFactory> emf;
+	private final static Class<TransactionHelper> TRANSACTION_HELPER_CLASS = TransactionHelper.class;
+	private final Supplier<EntityManager> emSupplier;
 	private ThreadLocal<EntityManager> buffer = new ThreadLocal<>();
 
-	public TransactionMethodWrapper(Supplier<EntityManagerFactory> entityManagerFactorySupplier) {
-		this.emf = entityManagerFactorySupplier;
+	public TransactionMethodWrapper(Supplier<EntityManager> entityManagerSupplier) {
+		this.emSupplier = entityManagerSupplier;
 	}
 
 	@Override
@@ -28,13 +29,13 @@ public class TransactionMethodWrapper implements AnnotationMethodWrapper {
 				if (entityManager != null) {
 					return entityManager;
 				} else {
-					return emf.get().createEntityManager();
+					return emSupplier.get();
 				}
 			} else if (ReflectionUtil.isMethodContainsAnnotationName(method, TRANSACTION_CLASS)) {
 				System.out.println("Transaction Start");
 				EntityManager entityManager = buffer.get();
 				if (entityManager == null) {
-					entityManager = emf.get().createEntityManager();
+					entityManager = emSupplier.get();
 					buffer.set(entityManager);
 				}
 				EntityTransaction transaction = entityManager.getTransaction();
@@ -60,7 +61,7 @@ public class TransactionMethodWrapper implements AnnotationMethodWrapper {
 
 	@Override
 	public boolean isEqualsAnnotation(Annotation annotationClass) {
-//        return annotationClass.annotationType().equals(TRANSACTION_CLASS);
-		return true;
+		return annotationClass.annotationType().equals(TRANSACTION_CLASS) ||
+			annotationClass.annotationType().equals(TRANSACTION_HELPER_CLASS);
 	}
 }

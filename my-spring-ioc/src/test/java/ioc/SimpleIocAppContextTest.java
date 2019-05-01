@@ -15,13 +15,13 @@ class SimpleIocAppContextTest {
 
 	@Test
 	public void createEmptyContext() {
-		BeanFactory javaConfAppContext = new SimpleIocAppContext(List.of());
+		BeanFactory javaConfAppContext = new SimpleIocAppContext();
 		assertNotNull(javaConfAppContext);
 	}
 
 	@Test
 	public void beanDefIsEmptyAfterCreation() {
-		BeanFactory javaConfAppContext = new SimpleIocAppContext(List.of());
+		BeanFactory javaConfAppContext = new SimpleIocAppContext();
 		List<String> beanDefinitionNames = javaConfAppContext.getBeanDefinitionNames();
 		assertEquals(0, beanDefinitionNames.size());
 	}
@@ -29,9 +29,9 @@ class SimpleIocAppContextTest {
 	//
 	@Test
 	public void beanDefIsNotForContext() {
-		BeanFactory javaConfAppContext = new SimpleIocAppContext(List.of(BeanA.class));
+		BeanFactory javaConfAppContext = new SimpleIocAppContext("ioc.testClasses.SimpleBeans");
 		List<String> beanDefinitionNames = javaConfAppContext.getBeanDefinitionNames();
-		assertEquals(1, beanDefinitionNames.size());
+		assertEquals(3, beanDefinitionNames.size());
 	}
 
 	@Test

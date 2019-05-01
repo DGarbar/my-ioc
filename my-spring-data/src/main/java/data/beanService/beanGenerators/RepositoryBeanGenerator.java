@@ -2,27 +2,39 @@ package data.beanService.beanGenerators;
 
 import data.beanService.beanDefinitions.RepositoryBeanDefinition;
 import data.dataService.sqlParser.MethodSqlDefinition;
+import ioc.beanService.beanDefinitions.BeanDefinition;
+import ioc.beanService.beanGenerators.BeanGenerator;
 import ioc.exception.BadInvocationException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import javax.persistence.*;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-public class RepositoryBeanGenerator {
+public class RepositoryBeanGenerator implements BeanGenerator {
 
-	public RepositoryBeanGenerator() {
+	private Supplier<EntityManager> entityManagerSupplier;
+
+	public RepositoryBeanGenerator(Supplier<EntityManager> entityManagerSupplier) {
+		this.entityManagerSupplier = entityManagerSupplier;
 	}
 
-	public Object getInstanceOfBean(RepositoryBeanDefinition beanDefinition,
-		EntityManagerFactory entityManagerFactory) {
-		Enhancer proxy = getProxy(beanDefinition, entityManagerFactory);
+	@Override
+	public boolean supports(BeanDefinition beanDefinition) {
+		return beanDefinition instanceof RepositoryBeanDefinition;
+	}
+
+	@Override
+	public Object getInstanceOfBean(BeanDefinition beanDefinition, List<Object> parameter) {
+		RepositoryBeanDefinition originBeanDefinition = getOriginBeanDefinition(beanDefinition);
+		Enhancer proxy = getProxy(originBeanDefinition);
 		return proxy.create();
 	}
 
-	private Enhancer getProxy(RepositoryBeanDefinition beanDefinition,
-		EntityManagerFactory entityManagerFactory) {
+	private Enhancer getProxy(RepositoryBeanDefinition beanDefinition) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(beanDefinition.getOriginClass());
 		enhancer.setCallback(
@@ -44,8 +56,7 @@ public class RepositoryBeanGenerator {
 					} else {
 						System.out.println(method + " IS in transaction");
 						Object resss;
-						EntityManager entityManager = entityManagerFactory
-							.createEntityManager();
+						EntityManager entityManager = entityManagerSupplier.get();
 						EntityTransaction transaction = entityManager.getTransaction();
 						try {
 							transaction.begin();
@@ -64,6 +75,10 @@ public class RepositoryBeanGenerator {
 				}
 			});
 		return enhancer;
+	}
+
+	private RepositoryBeanDefinition getOriginBeanDefinition(BeanDefinition beanDefinition) {
+		return (RepositoryBeanDefinition) beanDefinition;
 	}
 
 }

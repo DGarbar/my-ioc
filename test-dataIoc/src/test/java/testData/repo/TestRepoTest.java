@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import data.DataIocAppContext;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import testData.model.TestModel;
@@ -53,7 +51,32 @@ class TestRepoTest {
 		entity.setName("a");
 		testRepo.save(entity);
 
-		TestModel a = testRepo.findByNameAndId("a", 1L);
+		List<TestModel> byNameAndId = testRepo.findByNameAndId("a", 1L);
+		assertNotNull(byNameAndId);
 	}
+
+	@Test
+	void testRepoIsFindByNatural() {
+		DataIocAppContext testData = new DataIocAppContext("testData");
+		TestRepo testRepo = testData.getBean("testRepo");
+		TestModel entity = new TestModel();
+		entity.setName("a");
+		entity.setSurname("b");
+		testRepo.save(entity);
+
+		TestModel bySurname = testRepo.findBySurname("b");
+		assertNotNull(bySurname);
+	}
+
+		@Test
+		void testMyRepoIsInTransaction() {
+			DataIocAppContext testData = new DataIocAppContext("testData");
+			MyRepo repo = testData.getBean(MyRepo.class);
+			repo.performInTc();
+			repo.performInTc2();
+			repo.performInTc2();
+		}
+
+
 
 }

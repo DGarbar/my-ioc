@@ -1,26 +1,15 @@
-import static model.Link.linkTo;
+import static shorter.model.Link.linkTo;
 
 import ioc.SimpleIocAppContext;
-import java.util.List;
 import java.util.Optional;
-import model.Link;
-import repo.InMemShortLinksRepo;
-import repo.ShortLinksRepo;
-import service.DefaultShortenLinkService;
-import service.ShortenLinkService;
-import service.ShorterService;
-import service.ShorterServiceRandomNumber;
+import shorter.model.Link;
+import shorter.service.DefaultShortenLinkService;
 
 public class ShorterApp {
 
 	public static void main(String[] args) {
 		String url = "https://www.facebook.com/groups/KyivKUG/";
-		SimpleIocAppContext simpleIocAppContext = new SimpleIocAppContext(
-			List.of(InMemShortLinksRepo.class,
-				ShorterServiceRandomNumber.class,
-				ShorterService.class,
-				DefaultShortenLinkService.class)
-		);
+		SimpleIocAppContext simpleIocAppContext = new SimpleIocAppContext("shorter");
 
 		DefaultShortenLinkService shortenLinkService = simpleIocAppContext
 			.getBean(DefaultShortenLinkService.class);

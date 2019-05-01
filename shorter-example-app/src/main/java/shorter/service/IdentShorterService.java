@@ -1,9 +1,9 @@
-package service;
+package shorter.service;
 
 import ioc.annotation.Component;
 import ioc.annotation.PostConstruct;
 
-@Component(name = "identShorterService")
+//@Component(name = "identShorterService")
 public class IdentShorterService implements ShorterService {
 
 	@PostConstruct

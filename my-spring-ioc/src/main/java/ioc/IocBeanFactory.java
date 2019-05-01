@@ -48,7 +48,10 @@ public abstract class IocBeanFactory implements BeanFactory {
 			.filter(beanDefinition -> beanDefinition.isAssignableFrom(clazz))
 			.collect(Collectors.toList());
 		if (beanDefinitions.size() > 1) {
-			throw new MultipleBeanMatch();
+			String beanNames = beanDefinitions.stream()
+				.map(BeanDefinition::getName)
+				.collect(Collectors.joining(", "));
+			throw new MultipleBeanMatch("for  "+ clazz + " founded beans = " + beanNames);
 		}
 		return (T) getBeanObject(beanDefinitions.get(0));
 	}

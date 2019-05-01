@@ -1,4 +1,4 @@
-package service;
+package shorter.service;
 
 import ioc.annotation.Benchmark;
 import ioc.annotation.Component;

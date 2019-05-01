@@ -24,7 +24,7 @@ public class TransactionMethodWrapper implements AnnotationMethodWrapper {
 	@Override
 	public Supplier<Object> wrap(Method method, Supplier<Object> rootInvoke) {
 		return () -> {
-			if (ReflectionUtil.isMethodContainsAnnotationName(method, TransactionHelper.class)) {
+			if (ReflectionUtil.isMethodContainsAnnotationName(method, TRANSACTION_HELPER_CLASS)) {
 				EntityManager entityManager = buffer.get();
 				if (entityManager != null) {
 					return entityManager;
@@ -40,6 +40,8 @@ public class TransactionMethodWrapper implements AnnotationMethodWrapper {
 				}
 				EntityTransaction transaction = entityManager.getTransaction();
 				try {
+					System.out.println(entityManager +" class em in wrapper");
+					System.out.println(transaction +" class tr in wrapper");;
 					transaction.begin();
 					Object o = rootInvoke.get();
 					transaction.commit();
@@ -52,6 +54,7 @@ public class TransactionMethodWrapper implements AnnotationMethodWrapper {
 					throw new BadInvocationException();
 				} finally {
 					entityManager.close();
+					buffer.set(null);
 				}
 			} else {
 				return rootInvoke.get();

@@ -1,4 +1,4 @@
-package repo;
+package shorter.repo;
 
 import ioc.annotation.Component;
 import java.util.HashMap;

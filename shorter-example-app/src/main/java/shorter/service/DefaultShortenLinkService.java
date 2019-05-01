@@ -1,19 +1,20 @@
-package service;
+package shorter.service;
 
-import static model.Link.HTTPLinkTo;
+import static shorter.model.Link.HTTPLinkTo;
 
 import ioc.annotation.Autowired;
 import ioc.annotation.Component;
 import java.util.Optional;
-import model.Link;
-import repo.ShortLinksRepo;
+import shorter.model.Link;
+import shorter.repo.ShortLinksRepo;
 
 @Component(name = "defaultShorterService")
 public class DefaultShortenLinkService implements ShortenLinkService {
 
 	private final ShortLinksRepo shortLinksRepo;
 	private final ShorterService shorterService;
-@Autowired
+
+	@Autowired
 	public DefaultShortenLinkService(ShortLinksRepo shortLinksRepo,
 		ShorterService shorterService) {
 		this.shortLinksRepo = shortLinksRepo;
